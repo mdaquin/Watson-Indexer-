@@ -1,0 +1,41 @@
+<project>
+
+    <property name="lib.dir"     value="lib"/>  
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="build">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/wastsonindexerv2.jar" basedir="build/classes">
+            <manifest>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="test" depends="jar">
+        <exec executable="cd indexes" /> 
+        <java fork="true" classname="uk.ac.open.kmi.watson.validation.utils.IndexFiles" failonerror="true">
+            <classpath>
+                <path refid="classpath"/>
+                <path location="build/classes/"/>
+            </classpath>
+            <arg value="test" />
+            <arg value="examples/pizza.owl" /> 
+	    <arg value="examples/sample.owl" /> 
+            <arg value="examples/travel.owl"/>
+        </java>
+        <exec executable="cd .." /> 
+    </target>
+
+</project>

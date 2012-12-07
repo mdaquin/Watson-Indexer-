@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY kaon2 'http://kaon2.semanticweb.org/internal#'>
+    <!ENTITY onto 'http://www.example.org/sample#'>
+    <!ENTITY owl 'http://www.w3.org/2002/07/owl#'>
+    <!ENTITY owl11 'http://www.w3.org/2006/12/owl11#'>
+    <!ENTITY owlx 'http://www.w3.org/2003/05/owl-xml#'>
+    <!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+    <!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>
+    <!ENTITY ruleml 'http://www.w3.org/2003/11/ruleml#'>
+    <!ENTITY swrl 'http://www.w3.org/2003/11/swrl#'>
+    <!ENTITY swrlb 'http://www.w3.org/2003/11/swrlb#'>
+    <!ENTITY swrlx 'http://www.w3.org/2003/11/swrlx#'>
+    <!ENTITY xsd 'http://www.w3.org/2001/XMLSchema#'>
+]>
+
+<rdf:RDF
+    xml:base="http://www.example.org/sampleOntology"
+    xmlns="http://www.example.org/sample#"
+    xmlns:kaon2="http://kaon2.semanticweb.org/internal#"
+    xmlns:onto="http://www.example.org/sample#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:owl11="http://www.w3.org/2006/12/owl11#"
+    xmlns:owlx="http://www.w3.org/2003/05/owl-xml#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:ruleml="http://www.w3.org/2003/11/ruleml#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:swrlx="http://www.w3.org/2003/11/swrlx#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+
+<owl:Ontology rdf:about="">
+    <owl:incompatibleWith xml:lang="de">Pizza11</owl:incompatibleWith>
+</owl:Ontology>
+
+<owl:Class rdf:about="&onto;Writer">
+    <rdfs:subClassOf>
+        <owl:Class>
+            <owl:intersectionOf rdf:parseType="Collection">
+                <owl:Class rdf:about="&onto;Person"/>
+                <owl:Restriction>
+                    <owl:onProperty rdf:resource="&onto;isAuthorOf"/>
+                    <owl:someValuesFrom rdf:resource="&onto;Book"/>
+                </owl:Restriction>
+            </owl:intersectionOf>
+        </owl:Class>
+    </rdfs:subClassOf>
+    <owl:equivalentClass>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&onto;isAuthorOf"/>
+            <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+            <owl11:onClass rdf:resource="&onto;Book"/>
+        </owl:Restriction>
+    </owl:equivalentClass>
+</owl:Class>
+
+<owl:ObjectProperty rdf:about="&onto;hasRelative">
+    <rdf:type rdf:resource="&owl;SymmetricProperty"/>
+    <rdf:type rdf:resource="&owl;TransitiveProperty"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="&onto;hasUncle">
+    <rdfs:subPropertyOf rdf:resource="&onto;hasRelative"/>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="&onto;hasShoeSize">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:subPropertyOf rdf:resource="&onto;hasNumericProperty"/>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="&onto;Book">
+    <owl:disjointWith rdf:resource="&onto;Person"/>
+    <owl:disjointWith rdf:resource="&onto;Company"/>
+</owl:Class>
+
+<owl:ObjectProperty rdf:about="&onto;hasAuthor">
+    <owl:inverseOf rdf:resource="&onto;isAuthorOf"/>
+</owl:ObjectProperty>
+
+<owl:DatatypeProperty rdf:about="&onto;hasNumericProperty">
+    <rdfs:range rdf:resource="&xsd;integer"/>
+</owl:DatatypeProperty>
+
+<owl:ObjectProperty rdf:about="&onto;hasNephew">
+    <owl:inverseOf rdf:resource="&onto;hasUncle"/>
+    <rdfs:subPropertyOf rdf:resource="&onto;hasRelative"/>
+</owl:ObjectProperty>
+
+<owl:Class rdf:about="&onto;Monograph">
+    <rdfs:subClassOf rdf:resource="&onto;Book"/>
+    <owl:equivalentClass>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&onto;hasAuthor"/>
+            <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            <owl11:onClass rdf:resource="&onto;Person"/>
+        </owl:Restriction>
+    </owl:equivalentClass>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Person">
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&onto;hasRelative"/>
+            <owl:someValuesFrom rdf:resource="&onto;Person"/>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&onto;hasRelative"/>
+            <owl:allValuesFrom rdf:resource="&onto;Person"/>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+</owl:Class>
+
+<owl:DatatypeProperty rdf:about="&onto;hasIQ">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:subPropertyOf rdf:resource="&onto;hasNumericProperty"/>
+    <owl:equivalentProperty rdf:resource="&onto;hasShoeSize"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="&onto;hasName">
+    <rdfs:domain>
+        <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+                <owl:Class rdf:about="&onto;Company"/>
+                <owl:Class rdf:about="&onto;Person"/>
+            </owl:unionOf>
+        </owl:Class>
+    </rdfs:domain>
+    <rdfs:range rdf:resource="&xsd;string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="&onto;hasTitle">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:domain rdf:resource="&onto;Book"/>
+    <rdfs:range rdf:resource="&xsd;string"/>
+</owl:DatatypeProperty>
+
+<owl:Class rdf:about="&onto;Company">
+    <owl:disjointWith rdf:resource="&onto;Person"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Student">
+    <rdfs:subClassOf rdf:resource="&onto;Person"/>
+</owl:Class>
+
+<owl:ObjectProperty rdf:about="&onto;hasSoleAuthor">
+    <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+    <rdfs:subPropertyOf rdf:resource="&onto;hasAuthor"/>
+</owl:ObjectProperty>
+
+<owl:Class rdf:about="&onto;Writer">
+    <rdfs:subClassOf rdf:resource="&onto;MyThing"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Book">
+    <rdfs:subClassOf rdf:resource="&onto;MyThing"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Person">
+    <rdfs:subClassOf rdf:resource="&onto;MyThing"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Company">
+    <rdfs:subClassOf rdf:resource="&onto;MyThing"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;MyThing">
+    <owl:equivalentClass rdf:resource="&owl;Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;Book">
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="&onto;hasAuthor"/>
+            <owl:someValuesFrom rdf:resource="&onto;Person"/>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="&onto;MyThing">
+    <myAnnotationProperty rdf:datatype="&xsd;string">42</myAnnotationProperty>
+    <myAnnotationProperty rdf:datatype="&xsd;string">:-)</myAnnotationProperty>
+    <rdfs:comment xml:lang="de">das ist genau dasselbe, wie owl:Thing</rdfs:comment>
+    <rdfs:comment xml:lang="en">the same stuff as owl:Thing</rdfs:comment>
+    <rdfs:label xml:lang="de">Dingelchen</rdfs:label>
+</owl:Class>
+
+<owl:AnnotationProperty rdf:about="&onto;myAnnotationProperty">
+    <myAnnotationProperty rdf:datatype="&xsd;string">Kann das funktionieren???</myAnnotationProperty>
+</owl:AnnotationProperty>
+
+<owl:DatatypeProperty rdf:about="&onto;hasName">
+    <rdfs:label xml:lang="de">Name</rdfs:label>
+</owl:DatatypeProperty>
+
+<owl:ObjectProperty rdf:about="&onto;hasAuthor">
+    <rdfs:label xml:lang="de">autor</rdfs:label>
+</owl:ObjectProperty>
+
+<Monograph rdf:about="&onto;bruecke">
+    <myAnnotationProperty rdf:datatype="&xsd;string">test</myAnnotationProperty>
+    <hasTitle rdf:datatype="&xsd;string">die Brücke am G'weih</hasTitle>
+    <hasAuthor rdf:resource="&onto;peter"/>
+</Monograph>
+
+<rdf:Description rdf:about="&onto;peer">
+    <owl:sameAs rdf:resource="&onto;peter"/>
+</rdf:Description>
+
+<Person rdf:about="&onto;peter">
+    <rdf:type rdf:resource="&onto;Writer"/>
+    <hasNephew rdf:resource="&onto;walter"/>
+    <owl:differentFrom rdf:resource="&onto;walter"/>
+</Person>
+
+<Person rdf:about="&onto;walter">
+    <rdf:type rdf:resource="&onto;Student"/>
+</Person>
+
+
+
+<owl:Class rdf:about="&owl;Thing"/>
+
+<rdfs:Datatype rdf:about="&xsd;integer"/>
+
+<rdfs:Datatype rdf:about="&xsd;string"/>
+
+<owl:ObjectProperty rdf:about="&onto;isAuthorOf"/>
+
+</rdf:RDF>
